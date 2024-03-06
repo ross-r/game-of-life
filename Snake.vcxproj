@@ -141,7 +141,10 @@
     <ClCompile Include="includes\ext\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\application.cpp" />
     <ClCompile Include="src\audio.cpp" />
+    <ClCompile Include="src\game\bot.cpp" />
     <ClCompile Include="src\game\game.cpp" />
+    <ClCompile Include="src\game\pathfinder.cpp" />
+    <ClCompile Include="src\game\snake.cpp" />
     <ClCompile Include="src\imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="src\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -157,8 +160,12 @@
     <ClInclude Include="includes\ext\imgui\imstb_rectpack.h" />
     <ClInclude Include="includes\ext\imgui\imstb_textedit.h" />
     <ClInclude Include="includes\ext\imgui\imstb_truetype.h" />
+    <ClInclude Include="includes\game\bot.hpp" />
     <ClInclude Include="includes\game\colour.hpp" />
     <ClInclude Include="includes\game\game.hpp" />
+    <ClInclude Include="includes\game\pathfinder.hpp" />
+    <ClInclude Include="includes\game\snake.hpp" />
+    <ClInclude Include="includes\game\types.hpp" />
     <ClInclude Include="includes\imgui\imgui_impl_dx11.hpp" />
     <ClInclude Include="includes\imgui\imgui_impl_win32.hpp" />
     <ClInclude Include="includes\renderer.hpp" />
