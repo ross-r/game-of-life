@@ -1,5 +1,7 @@
 # Snake
 
+![MSBuild](https://github.com/ross-r/snake/actions/workflows/msbuild.yml/badge.svg)
+
 A very simple version of the classic Snake game written in C++ and using [Dear ImGui](https://github.com/ocornut/imgui) for rendering.
 
 ## Controls
