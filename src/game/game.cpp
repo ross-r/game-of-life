@@ -275,10 +275,11 @@ void game::Game::update_texture() {
     return;
   }
 
-  uint32_t* buffer = ( uint32_t* ) subresource.pData;
-  for( size_t i{}; i < m_bounds.x * m_bounds.y; ++i ) {
-    buffer[ i ] = m_pixel_buffer[ i ];
-  }
+  memcpy(
+    subresource.pData,
+    m_pixel_buffer.get(),
+    sizeof( uint32_t ) * m_bounds.x * m_bounds.y
+  );
 
   context->Unmap( m_staging, 0 );
 
