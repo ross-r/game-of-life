@@ -1,22 +1,11 @@
-# Snake
+# Conway's Game of Life
 
-![MSBuild](https://github.com/ross-r/snake/actions/workflows/msbuild.yml/badge.svg)
-
-A very simple version of the classic Snake game written in C++ and using [Dear ImGui](https://github.com/ocornut/imgui) for rendering.
+An implementation of Conway's Game of Life in C++ using DirectX 11 and [Dear ImGui](https://github.com/ocornut/imgui)
 
 ## Controls
 
-- W: up
-- S: down
-- A: left
-- D: right
-- P: pause
-
-### Features
-
-This version of Snake is basic in the classical sense, only a single fruit will spawn and there is no art or stylistic choices.
-
-By default, the game is configured to utilise A* path finding and play on it's own, currently there is no way to turn this off.
+- G: Show settings window
+- R: Toggle simulation running state
 
 ### Building and Running
 
@@ -31,3 +20,4 @@ Requires a GPU capable of DirectX 11 Graphics API
 ![A screenshot of the Snake game](screenshots/1.png)
 ![A screenshot of the Snake game](screenshots/2.png)
 ![A screenshot of the Snake game](screenshots/3.png)
+![A screenshot of the Snake game](screenshots/4.png)

@@ -38,7 +38,10 @@ bool app::Renderer::init_render_target() {
   m_context->RSSetViewports( 1, &viewport );
 
   // Finally, create the render target.
-  if( FAILED( m_device->CreateRenderTargetView( buffer, nullptr, &m_render_target ) ) ) {
+  D3D11_RENDER_TARGET_VIEW_DESC rtvdesc = {};
+  rtvdesc.Format = texdesc.Format;
+  rtvdesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+  if( FAILED( m_device->CreateRenderTargetView( buffer, &rtvdesc, &m_render_target ) ) ) {
     buffer->Release();
     return false;
   }
@@ -65,7 +68,7 @@ bool app::Renderer::init_imgui() {
   //ImGui::StyleColorsLight();
 
   //io.Fonts->AddFontDefault();
-  io.Fonts->AddFontFromFileTTF( "VCR_OSD_MONO_1.001.ttf", 32.F );
+  //io.Fonts->AddFontFromFileTTF( "VCR_OSD_MONO_1.001.ttf", 32.F );
 
   // Setup Platform/Renderer backends
   if( !ImGui_ImplWin32_Init( m_window->handle() ) ) {

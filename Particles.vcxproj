@@ -22,8 +22,9 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{907632bb-634c-4243-8077-5a4d3d2d8217}</ProjectGuid>
-    <RootNamespace>Snake</RootNamespace>
+    <RootNamespace>Particles</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Particles</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -75,6 +76,11 @@
     <OutDir>$(SolutionDir)\build\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>build\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IntDir>build\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\build\$(Platform)\$(Configuration)\</OutDir>
+    <IncludePath>$(ProjectDir)\includes;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -109,6 +115,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -125,6 +133,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,10 +151,7 @@
     <ClCompile Include="includes\ext\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\application.cpp" />
     <ClCompile Include="src\audio.cpp" />
-    <ClCompile Include="src\game\bot.cpp" />
     <ClCompile Include="src\game\game.cpp" />
-    <ClCompile Include="src\game\pathfinder.cpp" />
-    <ClCompile Include="src\game\snake.cpp" />
     <ClCompile Include="src\imgui\imgui_impl_dx11.cpp" />
     <ClCompile Include="src\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -160,12 +167,9 @@
     <ClInclude Include="includes\ext\imgui\imstb_rectpack.h" />
     <ClInclude Include="includes\ext\imgui\imstb_textedit.h" />
     <ClInclude Include="includes\ext\imgui\imstb_truetype.h" />
-    <ClInclude Include="includes\game\bot.hpp" />
-    <ClInclude Include="includes\game\colour.hpp" />
+    <ClInclude Include="includes\colour.hpp" />
     <ClInclude Include="includes\game\game.hpp" />
-    <ClInclude Include="includes\game\pathfinder.hpp" />
-    <ClInclude Include="includes\game\snake.hpp" />
-    <ClInclude Include="includes\game\types.hpp" />
+    <ClInclude Include="includes\types.hpp" />
     <ClInclude Include="includes\imgui\imgui_impl_dx11.hpp" />
     <ClInclude Include="includes\imgui\imgui_impl_win32.hpp" />
     <ClInclude Include="includes\renderer.hpp" />

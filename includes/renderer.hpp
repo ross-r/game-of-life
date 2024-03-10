@@ -40,6 +40,23 @@ namespace app {
     void set_clear_color( const float* clear_color );
 
     void* imgui_context() const;
+
+  public:
+    ID3D11Device* device() const {
+      return m_device;
+    }
+
+    ID3D11DeviceContext* context() const {
+      return m_context;
+    }
+
+    ID3D11RenderTargetView* render_target() const {
+      return m_render_target;
+    }
+
+    IDXGISwapChain* swapchain() const {
+      return m_swapchain;
+    }
   };
 
 }
