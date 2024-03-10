@@ -10,6 +10,7 @@
 #include <memory>
 #include <random>
 #include <algorithm>
+#include <functional>
 
 template< typename T >
 T clamp( const T value, const T min, const T max ) {
@@ -44,13 +45,17 @@ game::Game::Game( app::Application* app, app::Window* window ) :
   m_draw_debug = true;
   m_time_scale = 1.F;
   m_running = false;
-  m_texture_zoom_scale = 1.F;
 
   update_colours();
 }
 
 game::Game::~Game() {
   reset();
+
+  if( m_texture_sampler ) {
+    m_texture_sampler->Release();
+    m_texture_sampler = nullptr;
+  }
 }
 
 void game::Game::reset() {
@@ -86,7 +91,7 @@ void game::Game::reset() {
 }
 
 void game::Game::init( const Vec2< size_t >& bounds ) {
-  reset();
+  create_texture_sampler();
 
   auto& renderer = m_window->renderer();
   auto device = renderer.device();
@@ -224,7 +229,7 @@ void game::Game::draw() {
       const size_t row = ( size_t ) remapped_mouse_y;
       const size_t column = ( size_t ) remapped_mouse_x;
 
-      set_states( row, column, 1 );
+      set_states( row + 1, column + 1, 1 );
     }
   }
 
@@ -235,16 +240,43 @@ void game::Game::draw() {
   update_pixel_buffer();
   update_texture();
 
-  // TODO: Finish this, if the zoom level is >1 we want to use the cursor x/y as the start of the text relative to the center + zoom offset.
-  float center_x = ( float ) ( ( m_window->width() ) / 2.F ) - ( ( m_window->width() ) / 2.F ) * m_texture_zoom_scale;
-  float center_y = ( float ) ( ( m_window->height() ) / 2.F ) - ( ( m_window->height() ) / 2.F ) * m_texture_zoom_scale;
-  
-  // Draw the texture and stretch it out to the full window size regardless of the actual textures size.
+  // Setup the callback user data for the draw cmd callback.
+  m_callback_data.context = m_window->renderer().context();
+  m_callback_data.sampler = m_texture_sampler;
+
+  // Add our render callback for the next draw cmd.
+  draw_list->AddCallback( []( const ImDrawList* parent_list, const ImDrawCmd* pcmd ) {
+    RenderCallbackData* callback_data = reinterpret_cast< RenderCallbackData* >( pcmd->UserCallbackData );
+
+    ID3D11DeviceContext* context = callback_data->context;
+    ID3D11SamplerState* sampler = callback_data->sampler;
+
+    context->PSSetSamplers( 0, 1, &sampler );
+  }, &m_callback_data );
+
+  // Draw the image (this will use the user callback installed above)
   draw_list->AddImage(
     m_texture_resource,
-    { center_x, center_y },
-    { ( float ) m_window->width() * m_texture_zoom_scale, ( float ) m_window->height() * m_texture_zoom_scale }
+    { 0.F, 0.F },
+    { ( float ) m_window->width(), ( float ) m_window->height() }
   );
+}
+
+void game::Game::create_texture_sampler() {
+  if( m_texture_sampler ) {
+    return;
+  }
+
+  D3D11_SAMPLER_DESC desc = {};
+  desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+  desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+  desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+  desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+  desc.MipLODBias = 0.F;
+  desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+  desc.MinLOD = 0.F;
+  desc.MaxLOD = 0.F;
+  m_window->renderer().device()->CreateSamplerState( &desc, &m_texture_sampler );
 }
 
 void game::Game::update_texture() {
@@ -317,16 +349,17 @@ void game::Game::draw_debug_metrics() {
     ImGui::InputScalar( "Grid Size X", ImGuiDataType_U64, &m_temp_size_x );
     ImGui::InputScalar( "Grid Size Y", ImGuiDataType_U64, &m_temp_size_y );
 
-    //ImGui::SliderFloat( "Zoom", &m_texture_zoom_scale, 1.F, 10.F );
-
     if( ImGui::Button( "Reset" ) ) {
       m_running = false;
+
+      reset();
       init( { m_temp_size_x, m_temp_size_y } );
     }
 
     if( ImGui::Button( "Random" ) ) {
       m_running = false;
 
+      reset();
       init( m_bounds );
 
       std::random_device r;

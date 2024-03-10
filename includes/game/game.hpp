@@ -19,6 +19,12 @@ namespace app {
 
 namespace game {
 
+  // For use in ImGui's custom user callback for commands.
+  struct RenderCallbackData {
+    ID3D11DeviceContext* context;
+    ID3D11SamplerState* sampler;
+  };
+
   class Game {
   private:
     bool m_draw_debug;
@@ -33,6 +39,9 @@ namespace game {
     ID3D11Texture2D* m_staging;
     ID3D11Texture2D* m_texture;
     ID3D11ShaderResourceView* m_texture_resource;
+
+    // Texture sampler since we don't want linear interpolation on textures.
+    ID3D11SamplerState* m_texture_sampler;
 
     std::unique_ptr< uint32_t[] > m_pixel_buffer;
 
@@ -52,9 +61,9 @@ namespace game {
     size_t m_temp_size_x;
     size_t m_temp_size_y;
 
-    float m_texture_zoom_scale;
-
     bool m_running;
+
+    RenderCallbackData m_callback_data;
 
   public:
     Game( app::Application* app, app::Window* window );
@@ -70,6 +79,8 @@ namespace game {
     void draw();
   
   private:
+    void create_texture_sampler();
+
     void update_texture();
 
     void update_pixel_buffer();
