@@ -1,5 +1,7 @@
 # Conway's Game of Life
 
+![MSBuild](https://github.com/ross-r/game-of-life/actions/workflows/msbuild.yml/badge.svg)
+
 An implementation of Conway's Game of Life in C++ using DirectX 11 and [Dear ImGui](https://github.com/ocornut/imgui)
 
 ## Controls
